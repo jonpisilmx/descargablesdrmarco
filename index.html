@@ -1,124 +1,21 @@
-<!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repositorio de Reels & Contenido</title>
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              bg: '#D3CEC6',       /* Fondo neutral beige tipo referencia */
-              card: '#F8F6F2',     /* Tarjeta blanco hueso suave */
-              dark: '#1C1917',     /* Texto oscuro sobrio */
-              muted: '#6B655F',    /* Texto secundario */
-              accent: '#EA580C',   /* Naranja terroso/elegante para CTAs */
-              accentHover: '#C2410C',
-              tag: '#E2DDD5'
-            }
-          },
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            serif: ['"Playfair Display"', 'serif'],
-          }
-        }
-      }
-    }
-  </script>
-  
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <style>
-    /* Estilos de scrollbar personalizados */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #D3CEC6;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #B0A99F;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #8E867C;
-    }
-  </style>
-</head>
-<body class="bg-brand-bg text-brand-dark font-sans antialiased min-h-screen selection:bg-brand-accent selection:text-white pb-16">
-
-  <!-- Modal del Reproductor de Video -->
-  <div id="videoModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300">
-    <div class="relative w-full max-w-sm bg-stone-900 rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex flex-col max-h-[90vh]">
-      <!-- Header Modal -->
-      <div class="flex justify-between items-center px-5 py-4 border-b border-stone-800 bg-stone-900/90 backdrop-blur">
-        <h3 id="modalTitle" class="text-white font-medium text-sm truncate pr-2">Reproduciendo Reel</h3>
-        <button onclick="closeModal()" class="text-stone-400 hover:text-white p-1 rounded-full transition-colors">
-          <i data-lucide="x" class="w-6 h-6"></i>
-        </button>
-      </div>
-      <!-- Video Container (Ratio 9:16) -->
-      <div class="relative w-full aspect-[9/16] bg-black">
-        <iframe id="modalIframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-
-  <!-- Header Principal -->
-  <header class="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center md:text-left">
-    <div class="bg-brand-card/70 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-10 border border-white/50 shadow-sm">
-      <div class="flex flex-col md:flex-row justify-between md:items-end gap-6">
-        <div>
-          <span class="inline-block px-3 py-1 bg-brand-dark text-white text-xs font-semibold uppercase tracking-widest rounded-full mb-3">
-            Entregables
-          </span>
-          <h1 class="text-3xl sm:text-5xl font-serif font-normal tracking-tight text-brand-dark">
-            Repositorio de <span class="italic font-normal">Reels</span>
-          </h1>
-          <p class="mt-3 text-brand-muted text-sm sm:text-base max-w-xl leading-relaxed">
-            Material audiovisual finalizado y listo para publicar. Explora, previsualiza y descarga los videos con sus copies y hashtags optimizados.
-          </p>
-        </div>
-        <div class="flex items-center gap-3 self-center md:self-end text-xs font-medium text-brand-muted bg-stone-200/60 px-4 py-2 rounded-2xl">
-          <i data-lucide="film" class="w-4 h-4 text-brand-accent"></i>
-          <span>5 Videos Disponibles</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Contenedor Principal de la Galería -->
-  <main class="max-w-4xl mx-auto px-4 space-y-8">
-
-    <!-- REEL 01 -->
+<!-- REEL 06 -->
     <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
         
         <!-- Columna Izquierda: Vista previa de video -->
         <div class="md:col-span-5 flex flex-col items-center">
           <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
-            <img src="https://img.youtube.com/vi/6K0L1uZVlYs/maxresdefault.jpg" alt="Miniatura Reel 01" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            <img src="https://img.youtube.com/vi/ewRt41LvVFg/maxresdefault.jpg" alt="Miniatura Reel 06" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
-              <button onclick="openModal('https://www.youtube.com/embed/6K0L1uZVlYs?autoplay=1', 'Reel 01 - Salud Sexual y Reproductiva')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+              <button onclick="openModal('https://www.youtube.com/embed/ewRt41LvVFg?autoplay=1', 'Reel 06 - Apoyo a la Comunidad')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
                 <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
               </button>
             </div>
-            <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Reel 01</span>
+            <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Reel 06</span>
           </div>
 
           <!-- Botón de Descarga Google Drive -->
-          <a href="https://drive.google.com/file/d/1hN1H2xMzdVM9Ak8tvK906T6dbexGIY7t/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+          <a href="https://drive.google.com/file/d/1Wo27ZT4mHnIRhRtDbTGZnBNGGn9Kv1n5/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
             <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
           </a>
         </div>
@@ -127,10 +24,10 @@
         <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
           <div>
             <div class="flex items-center justify-between gap-2 mb-2">
-              <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Reel 01</span>
+              <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Reel 06</span>
               <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
             </div>
-            <h2 class="text-2xl font-serif font-bold text-brand-dark mb-4">Salud Sexual y Reproductiva</h2>
+            <h2 class="text-2xl font-serif font-bold text-brand-dark mb-4">Apoyo a la Comunidad y Salud Accessible</h2>
             
             <!-- Copy del Video -->
             <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
@@ -138,11 +35,11 @@
                 <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
                   <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
                 </span>
-                <button onclick="copyText('copy-1', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                <button onclick="copyText('copy-6', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
                   <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
                 </button>
               </div>
-              <p id="copy-1" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Te acompañamos, te asesoramos y cuidamos de tu salud. En Mazunte es posible encontrar atención médica profesional además de la discreción absoluta a la que todo paciente tiene derecho.</p>
+              <p id="copy-6" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Sabemos que somos una parte importante de la comunidad y buscamos alternativas para cuando la economía no está en su mejor momento.</p>
             </div>
 
             <!-- Hashtags -->
@@ -151,370 +48,19 @@
                 <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
                   <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
                 </span>
-                <button onclick="copyText('hash-1', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                <button onclick="copyText('hash-6', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
                   <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
                 </button>
               </div>
-              <p id="hash-1" class="text-xs text-brand-accent font-semibold leading-relaxed">#SaludSexualYReproductiva #ILE #DerechosReproductivos #EducaciónSexual #MedicoMazunte #ConsultorioMazunte</p>
+              <p id="hash-6" class="text-xs text-brand-accent font-semibold leading-relaxed">#MedicoMazunte #MedicamentosGenéricos #MedicamentosdePatente #MazuntePhysician</p>
             </div>
           </div>
 
           <!-- Botón Copiar Todo el Pack -->
-          <button onclick="copyFullPack('copy-1', 'hash-1', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+          <button onclick="copyFullPack('copy-6', 'hash-6', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
             <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
           </button>
         </div>
 
       </div>
     </article>
-
-    <!-- REEL 02 -->
-    <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        
-        <!-- Columna Izquierda: Vista previa de video -->
-        <div class="md:col-span-5 flex flex-col items-center">
-          <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
-            <img src="https://img.youtube.com/vi/9ve1qFHt1-4/maxresdefault.jpg" alt="Miniatura Reel 02" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
-              <button onclick="openModal('https://www.youtube.com/embed/9ve1qFHt1-4?autoplay=1', 'Reel 02 - Análisis y Pruebas Médicas')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
-                <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
-              </button>
-            </div>
-            <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Reel 02</span>
-          </div>
-
-          <!-- Botón de Descarga Google Drive -->
-          <a href="https://drive.google.com/file/d/1ypDxc-EsN7B05oKLqTGLC-uMZsGqzzwd/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
-            <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
-          </a>
-        </div>
-
-        <!-- Columna Derecha: Copy & Hashtags -->
-        <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
-          <div>
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Reel 02</span>
-              <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
-            </div>
-            <h2 class="text-2xl font-serif font-bold text-brand-dark mb-4">Análisis y Pruebas Médicas</h2>
-            
-            <!-- Copy del Video -->
-            <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
-                </span>
-                <button onclick="copyText('copy-2', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
-                </button>
-              </div>
-              <p id="copy-2" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Análisis de sangre, pruebas de embarazo y pruebas rápidas de VIH son sólo algunos de los exámenes que podemos realizarte en el consultorio de Mazunte. No tienes que desplazarte hasta Pochutla, te solucionamos sin que tengas que desplazarte</p>
-            </div>
-
-            <!-- Hashtags -->
-            <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
-                </span>
-                <button onclick="copyText('hash-2', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
-                </button>
-              </div>
-              <p id="hash-2" class="text-xs text-brand-accent font-semibold leading-relaxed">#Analisis #Laboratorios #PruebasdeEmbarazo #LaboratorioMazunte</p>
-            </div>
-          </div>
-
-          <!-- Botón Copiar Todo el Pack -->
-          <button onclick="copyFullPack('copy-2', 'hash-2', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
-            <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
-          </button>
-        </div>
-
-      </div>
-    </article>
-
-    <!-- REEL 03 -->
-    <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        
-        <!-- Columna Izquierda: Vista previa de video -->
-        <div class="md:col-span-5 flex flex-col items-center">
-          <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
-            <img src="https://img.youtube.com/vi/8-tdUTlQhpg/maxresdefault.jpg" alt="Miniatura Reel 03" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
-              <button onclick="openModal('https://www.youtube.com/embed/8-tdUTlQhpg?autoplay=1', 'Reel 03 - Contenido de Marca')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
-                <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
-              </button>
-            </div>
-            <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Reel 03</span>
-          </div>
-
-          <!-- Botón de Descarga Google Drive -->
-          <a href="https://drive.google.com/file/d/1Cu9DBzCQDl6fo3Bun0Ai5yqmZ160y_lm/view?usp=drive_open" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
-            <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
-          </a>
-        </div>
-
-        <!-- Columna Derecha: Copy & Hashtags -->
-        <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
-          <div>
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Reel 03</span>
-              <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Pendiente de Copy</span>
-            </div>
-            <h2 class="text-2xl font-serif font-bold text-brand-dark mb-4">Contenido de Marca</h2>
-            
-            <!-- Copy del Video -->
-            <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
-                </span>
-                <button onclick="copyText('copy-3', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
-                </button>
-              </div>
-              <p id="copy-3" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">[Ingresa aquí el copy definitivo para el Reel 03]</p>
-            </div>
-
-            <!-- Hashtags -->
-            <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
-                </span>
-                <button onclick="copyText('hash-3', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
-                </button>
-              </div>
-              <p id="hash-3" class="text-xs text-brand-accent font-semibold leading-relaxed">#Reel03 #ContenidoMedico #Mazunte</p>
-            </div>
-          </div>
-
-          <!-- Botón Copiar Todo el Pack -->
-          <button onclick="copyFullPack('copy-3', 'hash-3', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
-            <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
-          </button>
-        </div>
-
-      </div>
-    </article>
-
-    <!-- REEL 04 -->
-    <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        
-        <!-- Columna Izquierda: Vista previa de video -->
-        <div class="md:col-span-5 flex flex-col items-center">
-          <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
-            <img src="https://img.youtube.com/vi/UZONm8EPDWA/maxresdefault.jpg" alt="Miniatura Reel 04" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
-              <button onclick="openModal('https://www.youtube.com/embed/UZONm8EPDWA?autoplay=1', 'Reel 04 - Contenido Institucional')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
-                <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
-              </button>
-            </div>
-            <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Reel 04</span>
-          </div>
-
-          <!-- Botón de Descarga Google Drive -->
-          <a href="https://drive.google.com/file/d/1GuEHIHA-hzB5gJL_T6sQd5aa1_swBw19/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
-            <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
-          </a>
-        </div>
-
-        <!-- Columna Derecha: Copy & Hashtags -->
-        <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
-          <div>
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Reel 04</span>
-              <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Pendiente de Copy</span>
-            </div>
-            <h2 class="text-2xl font-serif font-bold text-brand-dark mb-4">Contenido Institucional</h2>
-            
-            <!-- Copy del Video -->
-            <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
-                </span>
-                <button onclick="copyText('copy-4', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
-                </button>
-              </div>
-              <p id="copy-4" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">[Ingresa aquí el copy definitivo para el Reel 04]</p>
-            </div>
-
-            <!-- Hashtags -->
-            <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
-                </span>
-                <button onclick="copyText('hash-4', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
-                </button>
-              </div>
-              <p id="hash-4" class="text-xs text-brand-accent font-semibold leading-relaxed">#Reel04 #AtencionMedica #Mazunte</p>
-            </div>
-          </div>
-
-          <!-- Botón Copiar Todo el Pack -->
-          <button onclick="copyFullPack('copy-4', 'hash-4', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
-            <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
-          </button>
-        </div>
-
-      </div>
-    </article>
-
-    <!-- REEL 05 -->
-    <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        
-        <!-- Columna Izquierda: Vista previa de video -->
-        <div class="md:col-span-5 flex flex-col items-center">
-          <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
-            <img src="https://img.youtube.com/vi/ajQ76tAhdYc/maxresdefault.jpg" alt="Miniatura Reel 05" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
-              <button onclick="openModal('https://www.youtube.com/embed/ajQ76tAhdYc?autoplay=1', 'Reel 05 - Atención Médica de Emergencias')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
-                <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
-              </button>
-            </div>
-            <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Reel 05</span>
-          </div>
-
-          <!-- Botón de Descarga Google Drive -->
-          <a href="https://drive.google.com/file/d/1ShvnMXz1is-2JIOwr5zR__Awd6YQy8KV/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
-            <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
-          </a>
-        </div>
-
-        <!-- Columna Derecha: Copy & Hashtags -->
-        <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
-          <div>
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Reel 05</span>
-              <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
-            </div>
-            <h2 class="text-2xl font-serif font-bold text-brand-dark mb-4">Atención Médica de Emergencias</h2>
-            
-            <!-- Copy del Video -->
-            <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
-                </span>
-                <button onclick="copyText('copy-5', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
-                </button>
-              </div>
-              <p id="copy-5" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">En cualquier momento, a cualquier hora estamos disponibles para ti, porque sabemos que en una emergencia cada minuto cuenta.</p>
-            </div>
-
-            <!-- Hashtags -->
-            <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
-                  <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
-                </span>
-                <button onclick="copyText('hash-5', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
-                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
-                </button>
-              </div>
-              <p id="hash-5" class="text-xs text-brand-accent font-semibold leading-relaxed">#mazunte #emergencias #consultorio #medicomazunte</p>
-            </div>
-          </div>
-
-          <!-- Botón Copiar Todo el Pack -->
-          <button onclick="copyFullPack('copy-5', 'hash-5', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
-            <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
-          </button>
-        </div>
-
-      </div>
-    </article>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="max-w-4xl mx-auto px-4 mt-12 text-center text-xs text-brand-muted">
-    <p>Repositorio de entrega de contenido audiovisual. Diseñado para descarga e implementación inmediata.</p>
-  </footer>
-
-  <!-- Scripts para interactividad y modales -->
-  <script>
-    // Inicializar Iconos Lucide
-    lucide.createIcons();
-
-    // Lógica del Modal de Video
-    const modal = document.getElementById('videoModal');
-    const modalIframe = document.getElementById('modalIframe');
-    const modalTitle = document.getElementById('modalTitle');
-
-    function openModal(embedUrl, title) {
-      modalIframe.src = embedUrl;
-      modalTitle.textContent = title;
-      modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      modal.classList.add('hidden');
-      modalIframe.src = '';
-      document.body.style.overflow = '';
-    }
-
-    // Cerrar modal al hacer clic en el fondo oscuro
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
-    });
-
-    // Cerrar modal con la tecla ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-        closeModal();
-      }
-    });
-
-    // Función para copiar texto individual (Copy o Hashtags)
-    function copyText(elementId, buttonElement) {
-      const textToCopy = document.getElementById(elementId).innerText;
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        const originalHTML = buttonElement.innerHTML;
-        buttonElement.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> <span class="text-emerald-600">¡Copiado!</span>`;
-        lucide.createIcons();
-        setTimeout(() => {
-          buttonElement.innerHTML = originalHTML;
-          lucide.createIcons();
-        }, 2000);
-      });
-    }
-
-    // Función para copiar todo el pack (Copy + Hashtags)
-    function copyFullPack(copyId, hashId, buttonElement) {
-      const copyText = document.getElementById(copyId).innerText;
-      const hashText = document.getElementById(hashId).innerText;
-      const fullContent = `${copyText}\n\n${hashText}`;
-
-      navigator.clipboard.writeText(fullContent).then(() => {
-        const originalHTML = buttonElement.innerHTML;
-        buttonElement.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> ¡Copy + Hashtags Copiados!`;
-        buttonElement.classList.remove('bg-brand-dark', 'hover:bg-stone-800');
-        buttonElement.classList.add('bg-emerald-800');
-        lucide.createIcons();
-
-        setTimeout(() => {
-          buttonElement.innerHTML = originalHTML;
-          buttonElement.classList.remove('bg-emerald-800');
-          buttonElement.classList.add('bg-brand-dark', 'hover:bg-stone-800');
-          lucide.createIcons();
-        }, 2500);
-      });
-    }
-  </script>
-</body>
-</html>
