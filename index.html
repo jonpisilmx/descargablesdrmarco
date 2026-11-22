@@ -1,458 +1,1239 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slides Verticales (JPG Export) - Dr. Marco Elizarrarás | Mazunte</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- html2canvas para generación e integración automática de JPGs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        creamBg: '#F4F1EA',
-                        creamSurface: '#FAF8F5',
-                        cardBg: '#EBE6DC',
-                        darkAccent: '#1C1C1E',
-                        darkAccentHover: '#2C2C2E',
-                        sageGreen: '#585E49',
-                        sageLight: '#E3E7DC',
-                        earthMuted: '#8A8578',
-                        textPrimary: '#1A1A18',
-                        textMuted: '#4A4843'
-                    },
-                    fontFamily: {
-                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
-                    }
-                }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repositorio de Reels & Contenido — CAVELI Mazunte</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#D3CEC6',       /* Fondo neutral beige tipo referencia */
+              card: '#F8F6F2',     /* Tarjeta blanco hueso suave */
+              dark: '#1C1917',     /* Texto oscuro sobrio */
+              muted: '#6B655F',    /* Texto secundario */
+              accent: '#EA580C',   /* Naranja terroso/elegante para CTAs */
+              accentHover: '#C2410C',
+              tag: '#E2DDD5'
             }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          }
         }
-    </script>
-
-    <style>
-        body {
-            background-color: #1C1C1E;
-            color: #1A1A18;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 16px;
-        }
-
-        /* Aspect Ratio Vertical Estilo Story (9:16) */
-        .slide-frame-vertical {
-            width: 100%;
-            max-width: 420px;
-            height: 88vh;
-            max-height: 800px;
-            background-color: #F4F1EA;
-            background-image: radial-gradient(circle at 90% 10%, rgba(88, 94, 73, 0.08) 0%, transparent 40%);
-        }
-
-        .slide-page {
-            display: none;
-            height: 100%;
-        }
-
-        .slide-page.active {
-            display: flex;
-        }
-    </style>
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* Estilos de scrollbar personalizados */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #D3CEC6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #B0A99F;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8E867C;
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-2 sm:p-4">
+<body class="bg-brand-bg text-brand-dark font-sans antialiased min-h-screen selection:bg-brand-accent selection:text-white pb-16">
 
-    <!-- Botón de Descarga Global de JPGs -->
-    <div class="w-full max-w-[420px] mb-3 flex items-center justify-between px-1">
-        <button onclick="descargarSlidesJPG()" id="btn-export" class="w-full py-3 bg-sageGreen hover:bg-opacity-90 text-creamSurface font-bold text-sm rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
-            <i data-lucide="download" class="w-4 h-4"></i>
-            <span>Descargar las 14 Slides en JPG</span>
+  <!-- Modal del Reproductor de Video -->
+  <div id="videoModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300">
+    <div class="relative w-full max-w-sm bg-stone-900 rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex flex-col max-h-[90vh]">
+      <!-- Header Modal -->
+      <div class="flex justify-between items-center px-5 py-4 border-b border-stone-800 bg-stone-900/90 backdrop-blur">
+        <h3 id="modalTitle" class="text-white font-medium text-sm truncate pr-2">Reproduciendo Reel</h3>
+        <button onclick="closeModal()" class="text-stone-400 hover:text-white p-1 rounded-full transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
         </button>
+      </div>
+      <!-- Video Container (Ratio 9:16) -->
+      <div class="relative w-full aspect-[9/16] bg-black">
+        <iframe id="modalIframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
     </div>
+  </div>
 
-    <!-- Frame de Pantalla Vertical 9:16 -->
-    <div class="slide-frame-vertical rounded-4xl shadow-2xl overflow-hidden flex flex-col justify-between border border-white/20 relative">
+  <!-- Header Principal -->
+  <header class="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center md:text-left">
+    <div class="bg-brand-card/70 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-10 border border-white/50 shadow-sm">
+      <div class="flex flex-col md:flex-row justify-between md:items-end gap-6">
+        <div>
+          <span class="inline-block px-3 py-1 bg-brand-dark text-white text-xs font-semibold uppercase tracking-widest rounded-full mb-3">
+            Entregables Audiovisuales
+          </span>
+          <h1 class="text-3xl sm:text-5xl font-serif font-normal tracking-tight text-brand-dark">
+            Repositorio de <span class="italic font-normal">Reels</span>
+          </h1>
+          <p class="mt-3 text-brand-muted text-sm sm:text-base max-w-xl leading-relaxed">
+            Material audiovisual finalizado y organizado por mes de entrega. Explora, previsualiza y descarga los videos con sus copies y hashtags optimizados.
+          </p>
+        </div>
+        <div class="flex flex-col items-center md:items-end gap-2 self-center md:self-end">
+          <div class="flex items-center gap-3 text-xs font-medium text-brand-muted bg-stone-200/60 px-4 py-2 rounded-2xl">
+            <i data-lucide="film" class="w-4 h-4 text-brand-accent"></i>
+            <span>15 Videos Totales (8 Oct • 7 Nov)</span>
+          </div>
+          <!-- Navegación rápida por mes -->
+          <div class="flex gap-2 mt-1">
+            <a href="#noviembre" class="text-[11px] font-semibold bg-brand-accent text-white px-3 py-1.5 rounded-full hover:bg-brand-accentHover transition-colors">
+              Ir a Noviembre ↓
+            </a>
+            <a href="#octubre" class="text-[11px] font-semibold bg-brand-card text-brand-dark border border-black/10 px-3 py-1.5 rounded-full hover:bg-stone-200 transition-colors">
+              Ver Octubre
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-        <!-- Top Navigation Header -->
-        <header class="px-5 py-4 bg-creamSurface/95 border-b border-gray-200/80 flex items-center justify-between shrink-0">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-sageGreen text-creamSurface flex items-center justify-center font-serif text-xl font-bold shadow-sm">
-                    M
-                </div>
-                <div>
-                    <h1 class="text-base font-bold text-textPrimary font-serif leading-none">Dr. Marco Elizarrarás</h1>
-                    <p class="text-xs text-sageGreen font-semibold mt-1">Consultorio 2 • Mazunte</p>
-                </div>
-            </div>
-            <span id="slide-counter" class="text-xs font-bold px-3 py-1.5 bg-cardBg text-darkAccent rounded-full">
-                1 / 14
-            </span>
-        </header>
+  <!-- Contenedor Principal de la Galería -->
+  <main class="max-w-4xl mx-auto px-4 space-y-14">
 
-        <!-- ÁREA DE CONTENIDO DE SLIDES -->
-        <div class="flex-1 p-6 overflow-y-auto">
+    <!-- ========================================================= -->
+    <!-- SECCIÓN: REELS NOVIEMBRE                                  -->
+    <!-- ========================================================= -->
+    <section id="noviembre" class="space-y-8 scroll-mt-6">
+      
+      <!-- Encabezado de Sección Noviembre -->
+      <div class="bg-brand-dark text-white rounded-[2rem] p-6 sm:px-8 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-md">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-widest text-brand-accent block mb-1">Nueva Entrega</span>
+          <h2 class="text-2xl sm:text-3xl font-serif font-normal">Reels Noviembre</h2>
+        </div>
+        <div class="flex items-center gap-2 text-xs text-stone-300 bg-white/10 px-4 py-2 rounded-xl self-start sm:self-center">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+          <span>7 Reels Listos (01 al 07)</span>
+        </div>
+      </div>
 
-            <!-- SLIDE 1: PORTADA -->
-            <div class="slide-page active flex-col justify-center space-y-5">
-                <span class="px-4 py-1.5 bg-sageLight text-sageGreen text-xs font-bold uppercase tracking-wider rounded-full border border-sageGreen/25 w-fit">
-                    Estrategia 360° de Difusión
-                </span>
-                <h2 class="text-3xl font-serif font-medium text-textPrimary leading-tight">
-                    Propuesta Digital & BTL <br><span class="italic text-sageGreen">para Mazunte</span>
-                </h2>
-                <p class="text-base text-textMuted leading-relaxed">
-                    Plan estratégico de <strong class="text-textPrimary font-semibold">Reels de alto impacto</strong> y <strong class="text-textPrimary font-semibold">activaciones territoriales (BTL)</strong> para conectar con la comunidad e impulsar el paso directo al <strong class="text-textPrimary font-semibold">Consultorio 2 (Junto a la Agencia de Policía)</strong>.
-                </p>
-                <div class="pt-3 border-t border-gray-200/90 space-y-2 text-xs sm:text-sm font-semibold text-earthMuted">
-                    <p>📍 Mazunte, Oax. (Junto a Agencia de Policía)</p>
-                    <p>📞 Informes & Urgencias: 222 113 6211</p>
-                    <p>🩺 Atención Médica Directa • Sin Cita Previa</p>
-                </div>
-            </div>
-
-            <!-- SLIDE 2: RENOVACIÓN & COMPROMISO LOCAL -->
-            <div class="slide-page flex-col justify-center space-y-5">
-                <span class="text-xs font-bold text-sageGreen uppercase tracking-wider block">Contexto Estratégico</span>
-                <h3 class="text-2xl font-serif font-semibold text-textPrimary leading-snug">
-                    Renovación de Imagen & Compromiso Comunitario
-                </h3>
-                <div class="p-6 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-3.5 shadow-soft-editorial">
-                    <div class="flex items-center gap-2 text-sageGreen font-serif font-semibold text-base">
-                        <i data-lucide="sparkles" class="w-5 h-5 shrink-0"></i>
-                        <span>Interés Genuino por Mazunte</span>
-                    </div>
-                    <p class="text-base text-textMuted leading-relaxed">
-                        Es fundamental evidenciar el interés por beneficiar a la comunidad local, posicionando a este <strong class="text-textPrimary font-semibold">nuevo equipo médico profesional</strong> que asume el consultorio con una propuesta cálida, tecnológica y humana, diferenciándose por completo de gestiones anteriores.
-                    </p>
-                </div>
-            </div>
-
-            <!-- SLIDE 3: REEL 01 (ESTRELLA LOCAL) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageGreen text-creamSurface text-xs font-bold rounded-full uppercase">
-                        🌟 Reel Estrella 01
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Comunidad Local</span>
-                </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    ¿Por qué viajar hasta Pochutla? Tu salud completa en Mazunte
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Salud familiar, control de diabetes e hipertensión, seguimiento prenatal y laboratorios sin traslados largos.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"Para cuidar de tu salud y la de tu familia ya no tienes que desplazarte lejos. En nuestro consultorio junto a la Agencia de Policía de Mazunte encuentras atención médica directa, control de diabetes, ultrasonido y laboratorios sin salir de tu comunidad."</p>
-                </div>
+      <!-- NOV - REEL 01 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/VUq3gyFHlWg/maxresdefault.jpg" alt="Miniatura Noviembre Reel 01" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/VUq3gyFHlWg?autoplay=1', 'Noviembre • Reel 01 - Cercanía, Calidez y Seguimiento Médico Puntual')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Nov • Reel 01</span>
             </div>
 
-            <!-- SLIDE 4: REEL 02 (ESTRELLA AVECINDADOS) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageGreen text-creamSurface text-xs font-bold rounded-full uppercase">
-                        🌟 Reel Estrella 02
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Avecindados</span>
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1mWqOsoX-t040zOic9cnuwS7ussxjmXO1/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Noviembre • Reel 01</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Cercanía, Calidez y Seguimiento Médico Puntual</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('nov-copy-1', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
                 </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    Medicina Preventiva & Diagnóstico Integral en la Costa
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Para residentes nacionales e internacionales. Rayos X portátiles digitales, vacuna VPH y chequeos.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"Vivir en Mazunte es increíble, pero saber dónde atender tu salud con respaldo profesional da verdadera paz. Ofrecemos medicina integral, Rayos X digitales portátiles, laboratorio y esquemas de vacunación como la vacuna contra el VPH."</p>
+                <p id="nov-copy-1" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Tu salud merece mucho más que una receta rápida; merece médicos comprometidos que te escuchen y te acompañen paso a paso. En CAVELI Mazunte nos distingue la calidez humana, la ética profesional y el seguimiento puntual a tu recuperación, para que siempre tengas la certeza de estar en las mejores manos.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('nov-hash-1', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
                 </div>
+                <p id="nov-hash-1" class="text-xs text-brand-accent font-semibold leading-relaxed">#CAVELIMazunte #ConfianzaMedica #SeguimientoMedico #MedicoDeConfianza #SaludConCalidez #ConsultorioMazunte</p>
+              </div>
             </div>
 
-            <!-- SLIDE 5: REEL 03 (ESTRELLA TURISTAS) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageGreen text-creamSurface text-xs font-bold rounded-full uppercase">
-                        🌟 Reel Estrella 03
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Turistas / Flotante</span>
-                </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    Urgencias, Traumatología por Oleaje & Sueros Terapéuticos
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Atención inmediata ante traumatismos por olas, cortes, deshidratación y golpes de calor.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"El mar de la costa oaxaqueña es hermoso, pero a veces nos toma por sorpresa. Si sufriste un golpe por el oleaje, cortadura o deshidratación, contamos con atención de urgencias, Rayos X digitales al instante y sueros de recuperación inmediata."</p>
-                </div>
-            </div>
-
-            <!-- SLIDE 6: REEL 04 (RAYOS X DIGITALES) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageLight text-sageGreen text-xs font-bold rounded-full uppercase">
-                        Reel Táctico 04
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Diagnóstico Digital</span>
-                </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    Rayos X Digitales en Mazunte: Diagnóstico Instantáneo
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Equipo de radiografía portátil de alta precisión para diagnóstico inmediato de fracturas o lesiones de tórax.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"¿Sabías que ya no necesitas viajar a otra ciudad para tomarte una radiografía? Contamos con equipo portátil de Rayos X digital directamente en nuestro consultorio de Mazunte para evaluar lesiones al instante."</p>
-                </div>
-            </div>
-
-            <!-- SLIDE 7: REEL 05 (VACUNACIÓN VPH) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageLight text-sageGreen text-xs font-bold rounded-full uppercase">
-                        Reel Táctico 05
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Prevención Activa</span>
-                </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    Prevención Activa: Vacunación Especializada VPH
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Orientación profesional, empática y confidencial sobre esquemas de inmunización preventiva para hombres y mujeres.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"La prevención es la herramienta más poderosa de la medicina moderna. Contamos con la aplicación de la vacuna contra el VPH para hombres y mujeres. Un paso decisivo para proteger tu futuro."</p>
-                </div>
-            </div>
-
-            <!-- SLIDE 8: REEL 06 (CONTROL CRÓNICO) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageLight text-sageGreen text-xs font-bold rounded-full uppercase">
-                        Reel Táctico 06
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Salud Familiar</span>
-                </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    Control Dulce & Presión Estable: Acompañamiento Cercano
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Trato paciente, cálido y humano enfocado en el seguimiento continuo de hipertensión y diabetes.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"El control de la presión y la glucosa no tiene por qué ser complicado ni frío. Nos enfocamos en darte un seguimiento médico cercano, ajustando tus tratamientos de forma humana y comprensible."</p>
-                </div>
-            </div>
-
-            <!-- SLIDE 9: REEL 07 (DETECCIÓN DE EMBARAZO & EXÁMENES EN MAZUNTE) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageLight text-sageGreen text-xs font-bold rounded-full uppercase">
-                        Reel Táctico 07 • Embarazo
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Laboratorio Mazunte</span>
-                </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    Detección de Embarazo y Análisis Completos en Mazunte
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Toma de muestras en el consultorio de Mazunte, resultados en breve, mismos precios que en Pochutla y panel completo de estudios para embarazadas.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"¿Buscas confirmar un embarazo o hacerte tus exámenes? En el consultorio de Mazunte te tomas tus muestras fácil y rápido, con resultados en breve, a los mismos precios que en Pochutla, incluyendo todos los análisis para un chequeo completo del embarazo."</p>
-                </div>
-            </div>
-
-            <!-- SLIDE 10: REEL 08 (SUEROS) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageLight text-sageGreen text-xs font-bold rounded-full uppercase">
-                        Reel Táctico 08
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Bienestar & Recuperación</span>
-                </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    Sueros Terapéuticos y Rehidratación Rápida
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Recuperación intravenosa inmediata ante casos de insolación, deshidratación grave o desgaste físico.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"¿Golpe de calor, deshidratación o desgaste físico intenso? Evaluamos tu estado general y aplicamos terapia de sueros según tus necesidades específicas para que recuperes tu energía de forma segura."</p>
-                </div>
-            </div>
-
-            <!-- SLIDE 11: REEL 09 / ACCESIBILIDAD SIN CITAS -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="flex items-center justify-between">
-                    <span class="px-3.5 py-1 bg-sageLight text-sageGreen text-xs font-bold rounded-full uppercase">
-                        Reel Táctico 09
-                    </span>
-                    <span class="text-xs text-earthMuted font-bold">Accesibilidad Directa</span>
-                </div>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    Sin Citas, Sin Demoras: Tu Consultorio en Mazunte
-                </h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    Atención médica inmediata conforme vas llegando, a un costado de la Agencia de Policía.
-                </p>
-                <div class="p-5 bg-creamSurface rounded-3xl border border-gray-200/80 space-y-2 text-sm">
-                    <p class="font-semibold text-sageGreen">🗣️ Guión de V.O. (Overlay):</p>
-                    <p class="text-textPrimary italic leading-relaxed">"Cuando sientes un malestar, lo que menos quieres es esperar días por una cita médica. En nuestro consultorio en Mazunte te atendemos conforme vas llegando, con la calidad, tecnología y calidez que mereces."</p>
-                </div>
-            </div>
-
-            <!-- SLIDE 12: ESTRATEGIA BTL (ACCIONES TERRITORIALES) -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <span class="text-xs font-bold text-sageGreen uppercase tracking-wider block">Estrategia Territorial BTL</span>
-                <h3 class="text-xl font-serif font-bold text-textPrimary leading-snug">
-                    4 Pilares de Activación Local
-                </h3>
-                <div class="space-y-3 text-sm">
-                    <div class="p-4 bg-creamSurface rounded-2xl border border-gray-200/80">
-                        <strong class="text-textPrimary block">1. Pláticas Gratis de Diabetes</strong>
-                        <span class="text-xs text-textMuted">Talleres informativos y entrega de guía impresa de control en casa.</span>
-                    </div>
-                    <div class="p-4 bg-creamSurface rounded-2xl border border-gray-200/80">
-                        <strong class="text-textPrimary block">2. Señalización Bilingüe QR</strong>
-                        <span class="text-xs text-textMuted">En cruces clave (San Agustinillo y Rinconcito) con mapa GPS.</span>
-                    </div>
-                    <div class="p-4 bg-creamSurface rounded-2xl border border-gray-200/80">
-                        <strong class="text-textPrimary block">3. Alianza con Salvavidas & Hoteles</strong>
-                        <span class="text-xs text-textMuted">Señalización en torres y descuento para trabajadores del sector.</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SLIDE 13: ALCANCE DE LA AGENCIA -->
-            <div class="slide-page flex-col justify-center space-y-4">
-                <div class="p-6 rounded-3xl bg-darkAccent text-creamSurface space-y-3.5 shadow-soft-editorial">
-                    <div class="flex items-center gap-2.5 text-sageLight">
-                        <i data-lucide="shield-check" class="w-6 h-6 shrink-0"></i>
-                        <h4 class="text-xs font-bold uppercase tracking-wider">Alcance de Gestión Agencia (Todo Incluido)</h4>
-                    </div>
-                    <p class="text-sm text-gray-200 leading-relaxed">
-                        Como agencia, asumimos <strong class="text-white font-semibold">toda la gestión de relaciones públicas, negociaciones, acuerdos, permisos municipales y diseño gráfico</strong> de todos los materiales dentro de la iguala mensual. 
-                    </p>
-                    <p class="text-xs text-gray-300 italic pt-2 border-t border-white/15">
-                        *El único costo extra corresponderá exclusivamente a la impresión o manufactura física con proveedores externos.
-                    </p>
-                </div>
-            </div>
-
-            <!-- SLIDE 14: CONTACTO & CIERRE -->
-            <div class="slide-page flex-col justify-center space-y-5 text-center">
-                <span class="text-xs font-bold text-sageGreen uppercase tracking-wider block">Atención Inmediata</span>
-                <h3 class="text-2xl font-serif font-bold text-textPrimary">Dr. Marco Antonio Pérez Elizarrarás</h3>
-                <p class="text-sm text-textMuted leading-relaxed">
-                    📍 Consultorio 2: Junto a la Agencia de Policía, Mazunte, Oaxaca.
-                </p>
-                <div class="pt-2">
-                    <a href="https://wa.me/522221136211" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-darkAccent text-creamSurface font-bold rounded-full text-sm shadow-md">
-                        <i data-lucide="phone" class="w-4 h-4"></i> Contacto: 222 113 6211
-                    </a>
-                </div>
-            </div>
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('nov-copy-1', 'nov-hash-1', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
 
         </div>
+      </article>
 
-        <!-- Navigation Footer Bar -->
-        <footer class="px-5 py-4 bg-creamSurface/95 border-t border-gray-200/80 flex items-center justify-between shrink-0">
-            <button onclick="prevSlide()" class="px-4 py-2 bg-cardBg text-darkAccent hover:bg-sageLight text-xs font-bold rounded-full transition-colors flex items-center gap-1">
-                <i data-lucide="chevron-left" class="w-4 h-4"></i> Anterior
+      <!-- NOV - REEL 02 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/OLK9afi2GQM/maxresdefault.jpg" alt="Miniatura Noviembre Reel 02" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/OLK9afi2GQM?autoplay=1', 'Noviembre • Reel 02 - Especialistas y Alta Calidad Médica en Mazunte')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Nov • Reel 02</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1Qn3jUbXon6WfTaVkQdfbBpuiocqZHp1j/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Noviembre • Reel 02</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Especialistas y Alta Calidad Médica en Mazunte</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('nov-copy-2', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-copy-2" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Gracias a la confianza que nos has brindado durante años en CAVELI Pochutla, hoy damos un paso más para retribuir a nuestra comunidad: acercamos tratamientos de alta calidad y médicos especialistas itinerantes directamente a Mazunte. Nuestro compromiso es estar cada vez más cerca de ti y de tu familia.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('nov-hash-2', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-hash-2" class="text-xs text-brand-accent font-semibold leading-relaxed">#CAVELIMazunte #CAVELIPochutla #EspecialistasEnMazunte #SaludComunitaria #AtencionEspecializada #CostaDeOaxaca</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('nov-copy-2', 'nov-hash-2', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
             </button>
-            <button onclick="nextSlide()" class="px-4 py-2 bg-darkAccent text-creamSurface hover:bg-sageGreen text-xs font-bold rounded-full transition-colors flex items-center gap-1">
-                Siguiente <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- NOV - REEL 03 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/P0aG5exzYMo/maxresdefault.jpg" alt="Miniatura Noviembre Reel 03" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/P0aG5exzYMo?autoplay=1', 'Noviembre • Reel 03 - Precios Justos y Reembolsos con Aseguradoras')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Nov • Reel 03</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1DL21JScxMAgj4JQ9lQrPjEMZpkIdUh4Z/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Noviembre • Reel 03</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Precios Justos y Reembolsos con Aseguradoras</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('nov-copy-3', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-copy-3" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">¿Cuentas con seguro de gastos médicos o seguro de viaje? En CAVELI Mazunte facilitamos tu proceso de reembolso con tu aseguradora gracias a nuestros honorarios justos, transparentes y razonables, además de entregarte la documentación médica en regla para que tu trámite sea ágil y sin complicaciones.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('nov-hash-3', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-hash-3" class="text-xs text-brand-accent font-semibold leading-relaxed">#ReembolsoMedico #SegurosDeGastosMedicos #SeguroDeViaje #PreciosJustos #CAVELIMazunte #AtencionMedicaMazunte</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('nov-copy-3', 'nov-hash-3', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
             </button>
-        </footer>
+          </div>
 
-    </div>
+        </div>
+      </article>
 
-    <script>
-        let currentSlide = 1;
-        const totalSlides = 14;
+      <!-- NOV - REEL 04 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/bXLDQeK08Vo/maxresdefault.jpg" alt="Miniatura Noviembre Reel 04" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/bXLDQeK08Vo?autoplay=1', 'Noviembre • Reel 04 - Atención Médica en el Corazón de Mazunte')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Nov • Reel 04</span>
+            </div>
 
-        function showSlide(index) {
-            const slides = document.querySelectorAll('.slide-page');
-            slides.forEach((s, idx) => {
-                if (idx === index - 1) {
-                    s.classList.add('active');
-                } else {
-                    s.classList.remove('active');
-                }
-            });
-            document.getElementById('slide-counter').innerText = `${index} / ${totalSlides}`;
-        }
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1okvgvtoZrU0TU7mUdtHXqacOrIhjFep8/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
 
-        function nextSlide() {
-            if (currentSlide < totalSlides) {
-                currentSlide++;
-            } else {
-                currentSlide = 1;
-            }
-            showSlide(currentSlide);
-        }
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Noviembre • Reel 04</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Atención Médica en el Corazón de Mazunte</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('nov-copy-4', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-copy-4" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Disfruta tus vacaciones en Mazunte con total tranquilidad. Ya no tienes que viajar lejos para recibir atención médica de primer nivel: estamos ubicados en pleno centro, justo junto a la Agencia Municipal, con profesionales calificados listos para cuidarte cuando más lo necesites.</p>
+              </div>
 
-        function prevSlide() {
-            if (currentSlide > 1) {
-                currentSlide--;
-            } else {
-                currentSlide = totalSlides;
-            }
-            showSlide(currentSlide);
-        }
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('nov-hash-4', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-hash-4" class="text-xs text-brand-accent font-semibold leading-relaxed">#MedicoEnMazunte #VacacionesSeguras #MazunteOaxaca #ConsultorioMedico #SaludEnTusVacaciones #CAVELIMazunte</p>
+              </div>
+            </div>
 
-        // Script html2canvas para generación y descarga automática de imágenes JPG
-        async function descargarSlidesJPG() {
-            const btn = document.getElementById('btn-export');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = `<span>Generando JPGs... Por favor espera</span>`;
-            btn.disabled = true;
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('nov-copy-4', 'nov-hash-4', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
 
-            const slideFrame = document.querySelector('.slide-frame-vertical');
+        </div>
+      </article>
 
-            for (let i = 1; i <= totalSlides; i++) {
-                showSlide(i);
-                await new Promise(r => setTimeout(r, 250)); // Tiempo de renderizado
-                
-                const canvas = await html2canvas(slideFrame, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#1C1C1E'
-                });
+      <!-- NOV - REEL 05 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/V8G7bSgF7kU/maxresdefault.jpg" alt="Miniatura Noviembre Reel 05" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/V8G7bSgF7kU?autoplay=1', 'Noviembre • Reel 05 - Emergencia y Reconstrucción de Dedo en CAVELI Pochutla')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Nov • Reel 05</span>
+            </div>
 
-                const image = canvas.toDataURL('image/jpeg', 0.92);
-                const link = document.createElement('a');
-                link.download = `Slide_${i < 10 ? '0' + i : i}_Dr_Marco_Mazunte.jpg`;
-                link.href = image;
-                link.click();
-            }
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/19HNhbMPthq6KBh1W4vqhP-cH9b2iO5op/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
 
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-            showSlide(1); // Regresar al slide 1
-        }
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Noviembre • Reel 05</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Emergencia y Reconstrucción de Dedo en CAVELI Pochutla</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('nov-copy-5', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-copy-5" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Ante una emergencia médica, cada minuto cuenta. Trasladamos a nuestro paciente desde Mazunte hasta CAVELI Pochutla para realizar una cirugía de reconstrucción de la punta del dedo, logrando un resultado exitoso gracias a la coordinación oportuna, la prontitud y la preparación de nuestro equipo médico.</p>
+              </div>
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
-        });
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('nov-hash-5', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-hash-5" class="text-xs text-brand-accent font-semibold leading-relaxed">#EmergenciaMedica #CirugiaReconstructiva #CAVELIPochutla #CAVELIMazunte #AtencionDeEmergencia #SaludCostaOaxaca</p>
+              </div>
+            </div>
 
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('nov-copy-5', 'nov-hash-5', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- NOV - REEL 06 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/i7s-ojPasy8/maxresdefault.jpg" alt="Miniatura Noviembre Reel 06" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/i7s-ojPasy8?autoplay=1', 'Noviembre • Reel 06 - Visitas a Domicilio y Equipo Médico Portátil')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Nov • Reel 06</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1wnWSbeJPDXrjHXAG-KvYrEkDGKVTkTSn/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Noviembre • Reel 06</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Visitas a Domicilio y Equipo Médico Portátil</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('nov-copy-6', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-copy-6" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Sabemos que en zonas rurales o de difícil acceso la distancia puede ser un reto, pero sí llegamos. Realizamos visitas a domicilio y acudimos con equipo médico portátil cuando se requiere para brindarte una valoración oportuna y de calidad sin que tengas que arriesgarte o desplazarte de más.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('nov-hash-6', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-hash-6" class="text-xs text-brand-accent font-semibold leading-relaxed">#VisitaADomicilio #SaludRural #EquipoMedicoPortatil #MedicoMazunte #AtencionDomiciliaria #CAVELIMazunte</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('nov-copy-6', 'nov-hash-6', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- NOV - REEL 07 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/yUfPfUK5HF8/maxresdefault.jpg" alt="Miniatura Noviembre Reel 07" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/yUfPfUK5HF8?autoplay=1', 'Noviembre • Reel 07 - Exámenes de Embarazo y Control Prenatal en Mazunte')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Nov • Reel 07</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1AqHt48b_2GREGN2VILSza3lxoVV-R_pE/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Noviembre • Reel 07</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Listo para publicar</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Exámenes de Embarazo y Control Prenatal en Mazunte</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('nov-copy-7', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-copy-7" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Para la detección de embarazo y sus exámenes correspondientes, en nuestro consultorio de Mazunte puedes realizarte la toma de muestras de forma práctica, recibir tus resultados en breve y contar también con los estudios para un análisis completo de tu salud durante el embarazo, todo a los mismos precios que en Pochutla.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('nov-hash-7', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="nov-hash-7" class="text-xs text-brand-accent font-semibold leading-relaxed">#DeteccionDeEmbarazo #ExamenesDeEmbarazo #LaboratorioMazunte #SaludPrenatal #CAVELIMazunte #CAVELIPochutla</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('nov-copy-7', 'nov-hash-7', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECCIÓN: REELS OCTUBRE (ENTREGA ANTERIOR - 8 REELS)       -->
+    <!-- ========================================================= -->
+    <section id="octubre" class="space-y-8 pt-6 border-t border-black/10 scroll-mt-6">
+
+      <!-- Encabezado de Sección Octubre -->
+      <div class="bg-brand-card/90 border border-white/60 rounded-[2rem] p-6 sm:px-8 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-widest text-brand-muted block mb-1">Entrega Anterior Completada</span>
+          <h2 class="text-2xl sm:text-3xl font-serif font-normal text-brand-dark">Reels Octubre</h2>
+        </div>
+        <div class="flex items-center gap-2 text-xs font-medium text-brand-dark bg-brand-tag px-4 py-2 rounded-xl self-start sm:self-center">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-700"></i>
+          <span>8 Reels Entregados (01 al 08)</span>
+        </div>
+      </div>
+
+      <!-- OCT - REEL 01 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/6K0L1uZVlYs/maxresdefault.jpg" alt="Miniatura Reel 01" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/6K0L1uZVlYs?autoplay=1', 'Octubre • Reel 01 - Salud Sexual y Reproductiva')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Oct • Reel 01</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1hN1H2xMzdVM9Ak8tvK906T6dbexGIY7t/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Octubre • Reel 01</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Entregado</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Salud Sexual y Reproductiva</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('copy-1', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="copy-1" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Te acompañamos, te asesoramos y cuidamos de tu salud. En Mazunte es posible encontrar atención médica profesional además de la discreción absoluta a la que todo paciente tiene derecho.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('hash-1', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="hash-1" class="text-xs text-brand-accent font-semibold leading-relaxed">#SaludSexualYReproductiva #ILE #DerechosReproductivos #EducaciónSexual #MedicoMazunte #ConsultorioMazunte</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('copy-1', 'hash-1', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- OCT - REEL 02 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/9ve1qFHt1-4/maxresdefault.jpg" alt="Miniatura Reel 02" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/9ve1qFHt1-4?autoplay=1', 'Octubre • Reel 02 - Análisis y Pruebas Médicas')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Oct • Reel 02</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1ypDxc-EsN7B05oKLqTGLC-uMZsGqzzwd/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Octubre • Reel 02</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Entregado</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Análisis y Pruebas Médicas</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('copy-2', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="copy-2" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Análisis de sangre, pruebas de embarazo y pruebas rápidas de VIH son sólo algunos de los exámenes que podemos realizarte en el consultorio de Mazunte. No tienes que desplazarte hasta Pochutla, te solucionamos sin que tengas que desplazarte</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('hash-2', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="hash-2" class="text-xs text-brand-accent font-semibold leading-relaxed">#Analisis #Laboratorios #PruebasdeEmbarazo #LaboratorioMazunte</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('copy-2', 'hash-2', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- OCT - REEL 03 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/8-tdUTlQhpg/maxresdefault.jpg" alt="Miniatura Reel 03" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/8-tdUTlQhpg?autoplay=1', 'Octubre • Reel 03 - Modern Medical Care in Mazunte')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Oct • Reel 03</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1Cu9DBzCQDl6fo3Bun0Ai5yqmZ160y_lm/view?usp=drive_open" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Octubre • Reel 03</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Entregado</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Modern Medical Care in Mazunte</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('copy-3', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="copy-3" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Modern medical services with trained professionals, in the heart of Mazunte. While it might seem impossible to find excellent medical care in such a small, remote community, at CAVELI we understand the importance of reaching the places where people need us most. Reasonable prices, top-tier care.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('hash-3', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="hash-3" class="text-xs text-brand-accent font-semibold leading-relaxed">#MazunteDoctor #CAVELIMazunte #MedicalCareOaxaca #MazunteHealthcare #OaxacaCoastDoctor #MazunteCommunity</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('copy-3', 'hash-3', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- OCT - REEL 04 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/UZONm8EPDWA/maxresdefault.jpg" alt="Miniatura Reel 04" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/UZONm8EPDWA?autoplay=1', 'Octubre • Reel 04 - Atención Médica a Domicilio')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Oct • Reel 04</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1GuEHIHA-hzB5gJL_T6sQd5aa1_swBw19/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Octubre • Reel 04</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Entregado</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Atención Médica a Domicilio</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('copy-4', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="copy-4" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Llegamos a donde nos necesites y llevamos el equipo médico necesario para un diagnóstico rápido y exacto. Ahora es posible contar con servicios médicos especializados, incluso en casa, cuando las circunstancias no permiten que el paciente se desplace.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('hash-4', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="hash-4" class="text-xs text-brand-accent font-semibold leading-relaxed">#MedicoADomicilio #ConsultaDomiciliaria #MedicoMazunte #SaludMazunte #AtencionEspecializada #DiagnosticoRapido</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('copy-4', 'hash-4', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- OCT - REEL 05 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/ajQ76tAhdYc/maxresdefault.jpg" alt="Miniatura Reel 05" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/ajQ76tAhdYc?autoplay=1', 'Octubre • Reel 05 - Atención Médica de Emergencias')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Oct • Reel 05</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1ShvnMXz1is-2JIOwr5zR__Awd6YQy8KV/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Octubre • Reel 05</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Entregado</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Atención Médica de Emergencias</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('copy-5', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="copy-5" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">En cualquier momento, a cualquier hora estamos disponibles para ti, porque sabemos que en una emergencia cada minuto cuenta.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('hash-5', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="hash-5" class="text-xs text-brand-accent font-semibold leading-relaxed">#mazunte #emergencias #consultorio #medicomazunte</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('copy-5', 'hash-5', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- OCT - REEL 06 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/ewRt41LvVFg/maxresdefault.jpg" alt="Miniatura Reel 06" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/ewRt41LvVFg?autoplay=1', 'Octubre • Reel 06 - Apoyo a la Comunidad')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Oct • Reel 06</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1Wo27ZT4mHnIRhRtDbTGZnBNGGn9Kv1n5/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Octubre • Reel 06</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Entregado</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Apoyo a la Comunidad y Salud Accesible</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('copy-6', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="copy-6" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Sabemos que somos una parte importante de la comunidad y buscamos alternativas para cuando la economía no está en su mejor momento.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('hash-6', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="hash-6" class="text-xs text-brand-accent font-semibold leading-relaxed">#MedicoMazunte #MedicamentosGenéricos #MedicamentosdePatente #MazuntePhysician</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('copy-6', 'hash-6', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- OCT - REEL 07 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/uMRRClYvO14/maxresdefault.jpg" alt="Miniatura Reel 07" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/uMRRClYvO14?autoplay=1', 'Octubre • Reel 07 - Confianza y Discreción Médica')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Oct • Reel 07</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1QYFGWTblKRFWaJgqQKypUZbxb23mPp6U/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Octubre • Reel 07</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Entregado</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Confianza y Discreción Médica</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('copy-7', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="copy-7" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Nuestra relación con cada paciente se basa en la confianza y en la discreción, en nuestro consultorio tienes un espacio seguro.</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('hash-7', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="hash-7" class="text-xs text-brand-accent font-semibold leading-relaxed">#consultoriomazunte #dondeatendermeenmazunte #clinicademazunte #hospitalitodemazunte #consultaenmazunte</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('copy-7', 'hash-7', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- OCT - REEL 08 -->
+      <article class="bg-brand-card rounded-[2.5rem] p-6 sm:p-8 border border-white/60 shadow-lg shadow-black/5 transition-all duration-300 hover:shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Vista previa de video -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="relative w-full max-w-[260px] aspect-[9/16] rounded-3xl overflow-hidden shadow-md group border border-black/5 bg-stone-200">
+              <img src="https://img.youtube.com/vi/w7PcqZT03GQ/maxresdefault.jpg" alt="Miniatura Reel 08" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-5">
+                <button onclick="openModal('https://www.youtube.com/embed/w7PcqZT03GQ?autoplay=1', 'Octubre • Reel 08 - Relación de Confianza Médica')" class="w-full bg-white/90 hover:bg-white text-brand-dark py-3 px-4 rounded-2xl font-medium text-xs sm:text-sm flex items-center justify-center gap-2 backdrop-blur-sm transition-all shadow-lg active:scale-95">
+                  <i data-lucide="play" class="w-4 h-4 fill-brand-dark"></i> Previsualizar Video
+                </button>
+              </div>
+              <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Oct • Reel 08</span>
+            </div>
+
+            <!-- Botón de Descarga Google Drive -->
+            <a href="https://drive.google.com/file/d/1iG28qsqdJEWlxtyBY1EqKyG0LuENatwC/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-4 w-full max-w-[260px] bg-brand-accent hover:bg-brand-accentHover text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+              <i data-lucide="download" class="w-4 h-4"></i> Descargar de Drive
+            </a>
+          </div>
+
+          <!-- Columna Derecha: Copy & Hashtags -->
+          <div class="md:col-span-7 flex flex-col justify-between h-full space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-semibold tracking-wider uppercase text-brand-accent">Octubre • Reel 08</span>
+                <span class="text-[11px] text-brand-muted bg-brand-tag px-2.5 py-0.5 rounded-full">Entregado</span>
+              </div>
+              <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Relación de Confianza Médica</h3>
+              
+              <!-- Copy del Video -->
+              <div class="bg-stone-100/80 p-4 sm:p-5 rounded-2xl border border-stone-200/60 mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Copy sugerido
+                  </span>
+                  <button onclick="copyText('copy-8', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="copy-8" class="text-sm text-brand-dark/90 leading-relaxed font-normal whitespace-pre-line">Una consulta se trata también de construir una buena relación, de generar confianza, de escuchar con atención y de explicar con paciencia, así son las consultas en el #ConsultorioMazunte</p>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="bg-stone-100/80 p-4 rounded-2xl border border-stone-200/60">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[11px] font-bold text-brand-muted uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3.5 h-3.5"></i> Hashtags
+                  </span>
+                  <button onclick="copyText('hash-8', this)" class="text-xs text-brand-dark font-medium hover:text-brand-accent flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg shadow-sm border border-black/5 transition-colors">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar
+                  </button>
+                </div>
+                <p id="hash-8" class="text-xs text-brand-accent font-semibold leading-relaxed">#consultamazunte #doctorsanagustinillo #consultazipolite #consultoriosanagus #consultoriozipo</p>
+              </div>
+            </div>
+
+            <!-- Botón Copiar Todo el Pack -->
+            <button onclick="copyFullPack('copy-8', 'hash-8', this)" class="w-full bg-brand-dark hover:bg-stone-800 text-white font-medium py-3 px-4 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md">
+              <i data-lucide="copy-check" class="w-4 h-4"></i> Copiar Copy + Hashtags completos
+            </button>
+          </div>
+
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-4xl mx-auto px-4 mt-12 text-center text-xs text-brand-muted">
+    <p>Repositorio de entrega de contenido audiovisual • CAVELI Mazunte. Diseñado para descarga e implementación inmediata.</p>
+  </footer>
+
+  <!-- Scripts para interactividad y modales -->
+  <script>
+    // Inicializar Iconos Lucide
+    lucide.createIcons();
+
+    // Lógica del Modal de Video
+    const modal = document.getElementById('videoModal');
+    const modalIframe = document.getElementById('modalIframe');
+    const modalTitle = document.getElementById('modalTitle');
+
+    function openModal(embedUrl, title) {
+      modalIframe.src = embedUrl;
+      modalTitle.textContent = title;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      modalIframe.src = '';
+      document.body.style.overflow = '';
+    }
+
+    // Cerrar modal al hacer clic en el fondo oscuro
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Cerrar modal con la tecla ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+
+    // Función para copiar texto individual (Copy o Hashtags)
+    function copyText(elementId, buttonElement) {
+      const textToCopy = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalHTML = buttonElement.innerHTML;
+        buttonElement.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> <span class="text-emerald-600">¡Copiado!</span>`;
         lucide.createIcons();
-    </script>
+        setTimeout(() => {
+          buttonElement.innerHTML = originalHTML;
+          lucide.createIcons();
+        }, 2000);
+      });
+    }
+
+    // Función para copiar todo el pack (Copy + Hashtags)
+    function copyFullPack(copyId, hashId, buttonElement) {
+      const copyText = document.getElementById(copyId).innerText;
+      const hashText = document.getElementById(hashId).innerText;
+      const fullContent = `${copyText}\n\n${hashText}`;
+
+      navigator.clipboard.writeText(fullContent).then(() => {
+        const originalHTML = buttonElement.innerHTML;
+        buttonElement.innerHTML = `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> ¡Copy + Hashtags Copiados!`;
+        buttonElement.classList.remove('bg-brand-dark', 'hover:bg-stone-800');
+        buttonElement.classList.add('bg-emerald-800');
+        lucide.createIcons();
+
+        setTimeout(() => {
+          buttonElement.innerHTML = originalHTML;
+          buttonElement.classList.remove('bg-emerald-800');
+          buttonElement.classList.add('bg-brand-dark', 'hover:bg-stone-800');
+          lucide.createIcons();
+        }, 2500);
+      });
+    }
+  </script>
 </body>
 </html>
